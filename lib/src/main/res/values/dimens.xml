@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="material_drawer_width">640px</dimen>
+    <dimen name="material_mini_drawer_item">112px</dimen>
+    <dimen name="material_mini_drawer_item_badge_text">20px</dimen>
+    <dimen name="material_mini_drawer_item_icon">112px</dimen>
+    <dimen name="material_mini_drawer_item_icon_padding">32px</dimen>
+    <dimen name="material_mini_drawer_item_padding">24px</dimen>
+    <dimen name="material_mini_drawer_item_padding_sides">16px</dimen>
+    <dimen name="material_mini_drawer_item_profile_icon">80px</dimen>
+    <dimen name="material_mini_drawer_item_profile_icon_padding">32px</dimen>
+
+    <dimen name="material_drawer_item_padding">16px</dimen>
+    <dimen name="material_drawer_item_primary">96px</dimen>
+    <dimen name="material_drawer_item_primary_description">22px</dimen>
+    <dimen name="material_drawer_item_primary_icon">112px</dimen>
+    <dimen name="material_drawer_item_primary_icon_padding">24px</dimen>
+    <dimen name="material_drawer_item_primary_icon_padding_right">64px</dimen>
+    <dimen name="material_drawer_item_primary_text">26px</dimen>
+    <dimen name="material_drawer_padding">16px</dimen>
+    <dimen name="material_drawer_vertical_padding">32px</dimen>
+
+    <dimen name="material_drawer_item_secondary">96px</dimen>
+    <dimen name="material_drawer_item_secondary_description">22px</dimen>
+    <dimen name="material_drawer_item_secondary_icon">112px</dimen>
+    <dimen name="material_drawer_item_secondary_icon_padding">24px</dimen>
+    <dimen name="material_drawer_item_secondary_icon_padding_right">64px</dimen>
+    <dimen name="material_drawer_item_secondary_text">26px</dimen>
+
+</resources>
