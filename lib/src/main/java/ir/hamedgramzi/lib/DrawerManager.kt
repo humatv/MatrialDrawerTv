@@ -7,21 +7,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.mikepenz.crossfader.Crossfader
 import com.mikepenz.crossfader.view.CrossFadeSlidingPaneLayout
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.MiniDrawer
 import com.mikepenz.materialdrawer.model.*
+import com.mikepenz.materialdrawer.model.interfaces.withChecked
+import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+import com.mikepenz.materialdrawer.widget.MiniDrawerSliderView
 import ir.hamedgramzi.lib.R
 import kotlin.math.roundToInt
 
-class DrawerManager(val activity: FragmentActivity, val result: Drawer) {
+class DrawerManager(
+    val activity: FragmentActivity,
+    val result: MaterialDrawerSliderView,
+    var isRtl: Boolean = false
+) {
     private val TAG = "DrawerManager"
-    private lateinit var miniResult: MiniDrawer
+    private lateinit var miniResult: MiniDrawerSliderView
     lateinit var crossFader: Crossfader<*>
-    var frameFragmentRes: Int? = null
-    var isRtl = false;
+
     var miniDrawerBackColor: Int? = null;
     var useMiniDrawer: Boolean = true
-    var customHeightMiniDrawerItemInDp = 120
     var fireOnClick = false;
     var miniDrawerWidth =
         activity.resources.getDimension(R.dimen.material_mini_drawer_item).roundToInt()
@@ -35,18 +38,21 @@ class DrawerManager(val activity: FragmentActivity, val result: Drawer) {
             //get the widths in px for the first and second panel
             val firstWidth = drawerWidth
             val secondWidth = miniDrawerWidth
-
+            miniResult.enableSelectedMiniDrawerItemBackground = true
+            result.headerDivider = false
             //create and build our crossfader (see the MiniDrawer is also builded in here, as the build method returns the view to be used in the crossfader)
             //the crossfader library can be found here: https://github.com/mikepenz/Crossfader
             crossFader = Crossfader<CrossFadeSlidingPaneLayout>()
                 .withContent(activity.findViewById<View>(crossfadeContentResLayout))
-                .withFirst(result.slider, firstWidth)
-                .withSecond(miniResult.build(activity), secondWidth)
-//                    .withSavedInstance(savedInstanceState)
+                .withFirst(result, firstWidth)
+                .withSecond(miniResult, secondWidth)
                 .build()
-
-            //define the crossfader to be used with the miniDrawer. This is required to be able to automatically toggle open / close
-            miniResult.withCrossFader(CrossfadeWrapper(crossFader))
+            miniResult.crossFader = CrossfadeWrapper(crossFader)
+            var paddingTop = 0
+            if (result.headerHeight != null) {
+                paddingTop += result.headerHeight!!.asPixel(activity)
+            }
+            miniResult.setPadding(0, paddingTop, 0, 0)
             if (miniDrawerBackColor != null) {
                 crossFader.getSecond().setBackgroundColor(miniDrawerBackColor!!)
             }
@@ -54,7 +60,7 @@ class DrawerManager(val activity: FragmentActivity, val result: Drawer) {
             crossFader.crossFadeSlidingPaneLayout
                 .setShadowResourceLeft(R.drawable.material_drawer_shadow_left)
 
-            miniResult.withIncludeSecondaryDrawerItems(true)
+//            miniResult.withIncludeSecondaryDrawerItems(true)
 //            for (i in 0 until miniResult.itemAdapter?.itemList?.size()!!) {
 //                (miniResult.itemAdapter.getAdapterItem(i)!! as MiniDrawerItem).mCustomHeight =
 //                    DimenHolder.fromPixel(customHeightMiniDrawerItemInDp);
@@ -91,7 +97,7 @@ class DrawerManager(val activity: FragmentActivity, val result: Drawer) {
         }
         lastFocus = foc;
 
-        var position = result.currentSelectedPosition;
+        var position = result.selectedItemPosition;
         var item = result.adapter.getItem(position);
 
         if (event?.keyCode == left) {
@@ -194,21 +200,21 @@ class DrawerManager(val activity: FragmentActivity, val result: Drawer) {
         }
         return false;
     }
-
-    fun replaceFragment(fragment: Fragment, tag: String = fragment.javaClass.simpleName) {
-        if (frameFragmentRes != null) {
-
-            if (activity.supportFragmentManager.fragments.size > 0) {
-                val tx = activity.supportFragmentManager.beginTransaction()
-                tx.remove(activity.supportFragmentManager.fragments[0])
-                tx.commit()
-            }
-            val tx = activity.supportFragmentManager.beginTransaction()
-            tx.replace(frameFragmentRes!!, fragment, tag)
-            tx.commitNowAllowingStateLoss()
-        } else {
-            throw RuntimeException("You must fill frameFragmentRes for replace fragment in it")
-        }
-    }
+//
+//    fun replaceFragment(fragment: Fragment, tag: String = fragment.javaClass.simpleName) {
+//        if (frameFragmentRes != null) {
+//
+//            if (activity.supportFragmentManager.fragments.size > 0) {
+//                val tx = activity.supportFragmentManager.beginTransaction()
+//                tx.remove(activity.supportFragmentManager.fragments[0])
+//                tx.commit()
+//            }
+//            val tx = activity.supportFragmentManager.beginTransaction()
+//            tx.replace(frameFragmentRes!!, fragment, tag)
+//            tx.commitNowAllowingStateLoss()
+//        } else {
+//            throw RuntimeException("You must fill frameFragmentRes for replace fragment in it")
+//        }
+//    }
 
 }

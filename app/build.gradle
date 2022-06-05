@@ -22,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -34,10 +37,32 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.annotation:annotation:1.3.0"
+    implementation project(path: ':lib')
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+//    implementation "com.mikepenz:materialdrawer:9.0.0"
+    implementation ('com.github.hamedgramzi:MaterialDrawer:ad1399171b'){
+        force true
+    }
+
+    implementation ("androidx.slidingpanelayout:slidingpanelayout:1.1.0"){
+        force true
+    }
+    implementation 'com.mikepenz:crossfader:1.6.0@aar'
+    implementation('com.mikepenz:crossfadedrawerlayout:1.1.0@aar')
+    implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar'
+    implementation 'com.mikepenz:fontawesome-typeface:5.13.3.0-kotlin@aar'
+    implementation "com.mikepenz:iconics-core:5.3.3"
+//    implementation "com.mikepenz:materialdrawer-iconics:9.0.0"
+
+
+
 }

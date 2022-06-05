@@ -27,9 +27,8 @@ open class SpaceDrawerItem : AbstractDrawerItem<SpaceDrawerItem, SpaceDrawerItem
     constructor() : super()
 
 
-    override fun bindView(holder: SpaceViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(holder: SpaceViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
-
         val ctx = holder.itemView.context
 
         //set the identifier from the drawerItem here. It can be used to run tests
@@ -47,6 +46,7 @@ open class SpaceDrawerItem : AbstractDrawerItem<SpaceDrawerItem, SpaceDrawerItem
         //call the onPostBindView method to trigger post bind view actions (like the listener to modify the item if required)
         onPostBindView(this, holder.itemView)
     }
+
 
     override fun getViewHolder(v: View): SpaceViewHolder {
         return SpaceViewHolder(v)
