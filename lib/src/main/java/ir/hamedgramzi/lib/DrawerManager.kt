@@ -83,7 +83,7 @@ class DrawerManager(
         }
 
         if (event?.action == KeyEvent.ACTION_DOWN) {
-            if (crossFader.isCrossFaded() && (event?.keyCode != right)) {
+            if (crossFader.isCrossFaded() && (event?.keyCode == left)) {
                 return true;
             }
             return false;
@@ -142,7 +142,7 @@ class DrawerManager(
                         if (result.adapter.getItem(position + 1)?.tag != null && result.adapter.getItem(
                                 position + 1
                             )?.tag is Boolean
-                        ) (result.adapter.getItem(position + 1)?.tag as Boolean) else fireOnClick
+                        ) (result.adapter.getItem(position + 1)?.tag as Boolean) else (fireOnClick && result.adapter.getItem(position - 1)?.isSelectable == true)
                     result.setSelectionAtPosition(position + 1, fire)
                     result.recyclerView.scrollToPosition(position + 1)
                     break
@@ -157,10 +157,11 @@ class DrawerManager(
                     position--;
                 } else {
                     val fire: Boolean =
-                        if (result.adapter.getItem(position - 1)?.tag != null && result.adapter.getItem(
-                                position - 1
-                            )?.tag is Boolean
-                        ) (result.adapter.getItem(position - 1)?.tag as Boolean) else fireOnClick
+                        if (result.adapter.getItem(position - 1)?.tag != null
+                            && result.adapter.getItem(position - 1)?.tag is Boolean
+                        )
+                            (result.adapter.getItem(position - 1)?.tag as Boolean)
+                        else (fireOnClick && result.adapter.getItem(position - 1)?.isSelectable == true)
                     result.setSelectionAtPosition(position - 1, fire)
                     result.recyclerView.scrollToPosition(position - 1)
                     break
@@ -190,7 +191,7 @@ class DrawerManager(
 
             return true;
 
-        } else if (event?.keyCode == KeyEvent.KEYCODE_BACK) {
+        } else if (event?.keyCode == KeyEvent.KEYCODE_BACK || event?.keyCode == KeyEvent.KEYCODE_ESCAPE) {
             if (crossFader.isCrossFaded()) {
                 crossFader.crossFade()
                 return true

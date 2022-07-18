@@ -5,6 +5,7 @@
     <dimen name="material_mini_drawer_item">80dp</dimen>
     <dimen name="material_drawer_item_primary_icon">56dp</dimen>
     <dimen name="material_drawer_item_primary_icon_padding_left">12dp</dimen>
+    <dimen name="material_drawer_vertical_padding">12dp</dimen>
 <!--    <dimen name="material_mini_drawer_item_padding_sides">4dp</dimen>-->
 <!--    <dimen name="material_mini_drawer_item_padding">8dp</dimen>-->
 <!--    <dimen name="material_mini_drawer_item_padding_sides_left">16dp</dimen>-->
