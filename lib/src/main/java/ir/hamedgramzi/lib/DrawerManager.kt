@@ -3,8 +3,8 @@ package ir.huma.humaleanbacklib.Util
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.mikepenz.crossfader.Crossfader
 import com.mikepenz.crossfader.view.CrossFadeSlidingPaneLayout
 import com.mikepenz.materialdrawer.model.*
@@ -30,6 +30,8 @@ class DrawerManager(
         activity.resources.getDimension(R.dimen.material_mini_drawer_item).roundToInt()
     var drawerWidth =
         activity.resources.getDimension(R.dimen.material_drawer_width).roundToInt()
+
+    var isCrossFadeChanging = false
 
     fun build(crossfadeContentResLayout: Int) {
         if (useMiniDrawer) {
@@ -59,13 +61,26 @@ class DrawerManager(
             //define a shadow (this is only for normal LTR layouts if you have a RTL app you need to define the other one
             crossFader.crossFadeSlidingPaneLayout
                 .setShadowResourceLeft(R.drawable.material_drawer_shadow_left)
+            crossFader.withPanelSlideListener(object : SlidingPaneLayout.PanelSlideListener {
+                override fun onPanelSlide(panel: View, slideOffset: Float) {
+                    isCrossFadeChanging = true
+                }
 
-//            miniResult.withIncludeSecondaryDrawerItems(true)
-//            for (i in 0 until miniResult.itemAdapter?.itemList?.size()!!) {
-//                (miniResult.itemAdapter.getAdapterItem(i)!! as MiniDrawerItem).mCustomHeight =
-//                    DimenHolder.fromPixel(customHeightMiniDrawerItemInDp);
-//            }
+                override fun onPanelOpened(panel: View) {
+                    isCrossFadeChanging = false
+                }
+
+                override fun onPanelClosed(panel: View) {
+                    isCrossFadeChanging = false
+                }
+
+            })
+
         }
+    }
+
+    fun shouldGetKeyEvent(): Boolean {
+        return crossFader.isCrossFaded || isCrossFadeChanging
     }
 
     var lastFocus: View? = null;
@@ -82,9 +97,9 @@ class DrawerManager(
             left = temp;
         }
 
-        if (event?.action == KeyEvent.ACTION_DOWN) {
-            if (crossFader.isCrossFaded() && (event?.keyCode == left)) {
-                return true;
+        if (event?.action == KeyEvent.ACTION_UP) {
+            if (crossFader.isCrossFaded) {
+                return true
             }
             return false;
         }
@@ -142,7 +157,9 @@ class DrawerManager(
                         if (result.adapter.getItem(position + 1)?.tag != null && result.adapter.getItem(
                                 position + 1
                             )?.tag is Boolean
-                        ) (result.adapter.getItem(position + 1)?.tag as Boolean) else (fireOnClick && result.adapter.getItem(position - 1)?.isSelectable == true)
+                        ) (result.adapter.getItem(position + 1)?.tag as Boolean) else (fireOnClick && result.adapter.getItem(
+                            position - 1
+                        )?.isSelectable == true)
                     result.setSelectionAtPosition(position + 1, fire)
                     result.recyclerView.scrollToPosition(position + 1)
                     break
